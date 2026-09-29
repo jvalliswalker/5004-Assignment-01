@@ -194,7 +194,7 @@ class AnimalTest {
   @Test
   void toStringDelegatesToTheAgeDescription() {
     Animal pup = new Animal("Pip", Species.DOG, AgeMonths.of(AgeMonths.MAX_MONTHS), INTAKE);
-    assertEquals("Pip (Dog, 40 months, intake 2026-09-21)", pup.toString());
+    assertEquals("Pip (Dog, 40 years, intake 2026-09-21)", pup.toString());
   }
 
   @Test
