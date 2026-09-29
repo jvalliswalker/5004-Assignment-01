@@ -1,10 +1,5 @@
 # LLM Evaluation
 
-Produced with an LLM using the prompt in `LLM-Evaluation-prompt.md`, then reviewed and answered by
-you. **Both halves are required** — an unread LLM assessment pasted in whole is worth nothing.
-
----
-
 ## Assessment
 
 **Materials reviewed:** `Animal.java`, `AgeMonths.java`, `IntakeException.java`, `Species.java`,
@@ -167,20 +162,31 @@ reward.
 
 ## Your response
 
-*(Complete this section yourself: where you agree, where you don't, and what you would change given
-another day. See `LLM-Evaluation-prompt.md` and `how-to-submit.md` for what's expected here.)*
-
 ### Where it is right
+
+The LLM identified a hole in my testing for the `Animal` constructor arguments. While I had tested all individual invalid arguments, I had not tested multiple invalid arguments together.
+
+It also concluded that using and looping through a HashMap in the `validateConstructorArguments` method was unnecessary and could have been achieve with standard if-based null checks. I think this point is fair; I was initally thinking in terms of expandability, but the number of constructor arguments for `Animal` is unlikely to change, so a map was not necessary.
 
 ### Where it is wrong
 
+The LLM stated that there was there were no tests that "check(s) that years(), remainderMonths(), and months() stay mutually consistent for the same instance (e.g., years()*12 + remainderMonths() == months())". This isn't technically wrong, but it feels like overkill.
+
+The LLM stated that I failed to elaborate on the nature of the `Species` class in my introspection. I didn't expand on `Species` since I only modified tests in `SpeciesTest`, and I'm not sure I agree that this absence was a failing. That said, I could have spoken to the nature of enums and labels for `Species` in the "Invariants" section.
+
 ### What it missed
 
+I'm not aware of any areas the LLM missed in evaluating my assignment.
+
 ### What you changed
+
+Added testing of multiple invalid `Animal` constructor arguments together, and identified and resolved a bug in the functionality while doing so.
+
+Based on feedback that there was no test for "An Animal built with AgeMonths.of(AgeMonths.MAX_MONTHS)", I updated the `toStringDelegatesToTheAgeDescription` test to construct an animal using `AgeMonths.MAX_MONTHS`.
 
 ---
 
 ## Declaration
 
 - Which LLM and version you used: Claude Sonnet 5 (claude-sonnet-5), via Claude Code
-- Confirm you understand every line you submitted, regardless of who or what wrote it: [yes/no]
+- Confirm you understand every line you submitted, regardless of who or what wrote it: yes
