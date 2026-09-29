@@ -163,7 +163,6 @@ public class Animal {
       LocalDate intakeDate) {
 
     Map<String, Object> arguments = new HashMap<>();
-    arguments.put("Name", name);
     arguments.put("Species", species);
     arguments.put("Age", age);
     arguments.put("Intake date", intakeDate);
@@ -176,8 +175,8 @@ public class Animal {
       }
     }
 
-    if (name != null && this.normalizeWhitespace(name).isEmpty()) {
-      invalidArguments.put("name", "Name cannot be blank or all whitespace characters");
+    if (name == null || this.normalizeWhitespace(name).isEmpty()) {
+      invalidArguments.put("Name", "Name cannot be null or all whitespace characters");
     }
 
     if (invalidArguments.size() > 0) {

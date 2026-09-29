@@ -111,7 +111,9 @@ class AnimalTest {
         IntakeException.class,
         () -> new Animal(null, Species.DOG, AgeMonths.of(1), INTAKE));
 
-    this.confirmErrorMessage(e, "Name cannot be null");
+    this.confirmErrorMessage(
+        e,
+        "Name cannot be null or all whitespace characters");
   }
 
   @Test
@@ -120,7 +122,7 @@ class AnimalTest {
         IntakeException.class,
         () -> new Animal("", Species.DOG, AgeMonths.of(1), INTAKE));
 
-    this.confirmErrorMessage(e, "Name cannot be blank or all whitespace characters");
+    this.confirmErrorMessage(e, "Name cannot be null or all whitespace characters");
   }
 
   @Test
@@ -138,7 +140,7 @@ class AnimalTest {
 
       this.confirmErrorMessage(
           e,
-          "Name cannot be blank or all whitespace characters");
+          "Name cannot be null or all whitespace characters");
     }
   }
 
@@ -170,14 +172,29 @@ class AnimalTest {
   }
 
   @Test
+  void multipleInvalidArguments() {
+    IntakeException e = assertThrows(
+        IntakeException.class,
+        () -> new Animal(null, null, null, null));
+
+    System.err.println(e.getMessage());
+    assertTrue(e.getMessage().contains("Invalid arguments found"));
+    assertTrue(e.getMessage().contains("Species cannot be null"));
+    assertTrue(e.getMessage().contains("Age cannot be null"));
+    assertTrue(e.getMessage().contains("Intake date cannot be null"));
+    assertTrue(e.getMessage().contains("Name cannot be null or all whitespace characters"));
+
+  }
+
+  @Test
   void toStringFollowsTheSpecifiedFormat() {
     assertEquals("Luna (Cat, 1 year, 11 months, intake 2026-09-21)", luna().toString());
   }
 
   @Test
   void toStringDelegatesToTheAgeDescription() {
-    Animal pup = new Animal("Pip", Species.DOG, AgeMonths.of(1), INTAKE);
-    assertEquals("Pip (Dog, 1 month, intake 2026-09-21)", pup.toString());
+    Animal pup = new Animal("Pip", Species.DOG, AgeMonths.of(AgeMonths.MAX_MONTHS), INTAKE);
+    assertEquals("Pip (Dog, 40 months, intake 2026-09-21)", pup.toString());
   }
 
   @Test
