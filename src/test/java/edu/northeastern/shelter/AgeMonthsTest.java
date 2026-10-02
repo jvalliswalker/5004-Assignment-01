@@ -11,8 +11,11 @@ import org.junit.jupiter.api.Test;
 /**
  * The specification for {@link AgeMonths}, written as tests.
  *
- * <p>These tests ship with the assignment and are part of the spec — read them as the definition of
- * "correct". They do not, however, exhaust it: your own tests are graded too, and there are cases
+ * <p>
+ * These tests ship with the assignment and are part of the spec — read them as
+ * the definition of
+ * "correct". They do not, however, exhaust it: your own tests are graded too,
+ * and there are cases
  * here that are deliberately left for you to think of.
  */
 @Tag("current")
@@ -35,12 +38,24 @@ class AgeMonthsTest {
 
   @Test
   void negativeMonthsIsRefused() {
-    assertThrows(IntakeException.class, () -> AgeMonths.of(-1));
+    IntakeException e = assertThrows(
+        IntakeException.class,
+        () -> AgeMonths.of(-1));
+
+    assertEquals(
+        "age in months cannot be negative, was -1",
+        e.getMessage());
   }
 
   @Test
   void aboveTheMaximumIsRefused() {
-    assertThrows(IntakeException.class, () -> AgeMonths.of(AgeMonths.MAX_MONTHS + 1));
+    IntakeException e = assertThrows(
+        IntakeException.class,
+        () -> AgeMonths.of(AgeMonths.MAX_MONTHS + 1).toString());
+
+    assertEquals(
+        "age in months cannot exceed " + AgeMonths.MAX_MONTHS + ", was " + (AgeMonths.MAX_MONTHS + 1),
+        e.getMessage());
   }
 
   @Test
@@ -67,6 +82,7 @@ class AgeMonthsTest {
     assertTrue(AgeMonths.of(11).isUnderOneYear());
     assertFalse(AgeMonths.of(12).isUnderOneYear());
     assertFalse(AgeMonths.of(13).isUnderOneYear());
+    assertFalse(AgeMonths.of(AgeMonths.MAX_MONTHS).isUnderOneYear());
   }
 
   @Test
@@ -87,12 +103,15 @@ class AgeMonthsTest {
     assertEquals("1 year, 1 month", AgeMonths.of(13).toString());
     assertEquals("1 year, 11 months", AgeMonths.of(23).toString());
     assertEquals("2 years, 1 month", AgeMonths.of(25).toString());
+    assertEquals("40 years", AgeMonths.of(AgeMonths.MAX_MONTHS).toString());
   }
 
   @Test
   void theRefusalNamesTheOffendingValue() {
-    IntakeException tooOld =
-        assertThrows(IntakeException.class, () -> AgeMonths.of(AgeMonths.MAX_MONTHS + 1));
+    IntakeException tooOld = assertThrows(
+        IntakeException.class,
+        () -> AgeMonths.of(AgeMonths.MAX_MONTHS + 1));
+
     assertTrue(
         tooOld.getMessage().contains(String.valueOf(AgeMonths.MAX_MONTHS + 1)),
         "the message should name the value that was rejected");
